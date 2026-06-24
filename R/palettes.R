@@ -11,21 +11,24 @@
 .circadia_palettes <- list(
 
   # ---- Qualitative -------------------------------------------------------
-  # Six brand colours in order of visual weight; suitable for categorical data.
+  # Eight brand colours in order of visual weight; suitable for categorical data.
   main = c(
     deep_blue    = "#014370",
     coral_red    = "#FC544A",
     amber        = "#FFA75D",
+    ochre        = "#C8860A",
     antique_white = "#FFECD4",
     mid_blue     = "#1B6799",
+    steel_blue   = "#4A9BBF",
     pale_teal    = "#9BDFE2"
   ),
 
-  # Compact 4-colour subset (most frequently used in figures)
+  # Compact 5-colour subset (most frequently used in figures)
   core = c(
     deep_blue    = "#014370",
     coral_red    = "#FC544A",
     amber        = "#FFA75D",
+    ochre        = "#C8860A",
     antique_white = "#FFECD4"
   ),
 

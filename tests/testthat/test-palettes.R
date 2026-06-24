@@ -4,7 +4,7 @@ library(testthat)
 test_that("circadia_palette returns the main palette by default", {
   pal <- circadia_palette()
   expect_type(pal, "character")
-  expect_length(pal, 6L)
+  expect_length(pal, 8L)
   expect_true(all(grepl("^#[0-9A-Fa-f]{6}$", pal)))
 })
 
@@ -14,7 +14,7 @@ test_that("circadia_palette respects n argument", {
 })
 
 test_that("circadia_palette errors when n > palette length", {
-  expect_error(circadia_palette("core", n = 10), "only 4 colours")
+  expect_error(circadia_palette("core", n = 10), "only 5 colours")
 })
 
 test_that("circadia_palette errors for unknown palette", {
