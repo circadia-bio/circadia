@@ -16,7 +16,6 @@
     if (n <= length(pal)) {
       unname(pal[seq_len(n)])
     } else {
-      # Interpolate for continuous / fine-grained use
       grDevices::colorRampPalette(pal)(n)
     }
   }
