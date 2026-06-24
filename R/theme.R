@@ -8,8 +8,8 @@
 #'
 #' @param base_size Base font size in points. Default `14`.
 #' @param base_family Base font family. Default `""` (ggplot2 default).
-#' @param grid Which grid lines to show. One of `"y"` (horizontal only,
-#'   default), `"xy"` (both), `"x"` (vertical only), `"none"`.
+#' @param grid Which grid lines to show. One of `"none"` (default),
+#'   `"y"` (horizontal only), `"xy"` (both), `"x"` (vertical only).
 #' @param legend_position Position of the legend passed to
 #'   [ggplot2::theme()]. Default `"right"`.
 #'
@@ -28,7 +28,7 @@
 theme_circadia <- function(
     base_size       = 14,
     base_family     = "",
-    grid            = "y",
+    grid            = "none",
     legend_position = "right"
 ) {
   grid <- match.arg(grid, c("y", "xy", "x", "none"))
