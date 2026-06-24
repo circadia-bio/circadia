@@ -1,0 +1,66 @@
+url: https://github.com/circadia-bio/circadia
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary:        "#014370"
+    link-color:     "#1B6799"
+    headings-color: "#014370"
+    base_font: {google: "Inter"}
+    heading_font: {google: "Inter"}
+
+home:
+  title: "circadia — Circadia Lab visual identity for R"
+  description: >
+    Colour palettes, ggplot2 theme, and scales for the Circadia Lab R ecosystem.
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [github]
+  components:
+    github:
+      icon: fab fa-github
+      href: https://github.com/circadia-bio/circadia
+
+reference:
+  - title: Palettes
+    desc: >
+      Retrieve and explore colour palettes.
+    contents:
+      - circadia_palette
+      - circadia_palettes
+      - domain_colour_for
+  - title: Theme
+    desc: >
+      ggplot2 theme consistent with Circadia Lab figures.
+    contents:
+      - theme_circadia
+  - title: Scales — discrete
+    desc: >
+      Apply Circadia Lab palettes to discrete colour/fill aesthetics.
+    contents:
+      - scale_colour_circadia
+      - scale_color_circadia
+      - scale_fill_circadia
+  - title: Scales — continuous
+    desc: >
+      Interpolated palettes for continuous colour/fill aesthetics.
+    contents:
+      - scale_colour_circadia_c
+      - scale_color_circadia_c
+      - scale_fill_circadia_c
+
+articles:
+  - title: Guides
+    navbar: ~
+    contents:
+      - getting-started
+
+footer:
+  left: >
+    Developed by the
+    [Circadia Lab](https://github.com/circadia-bio),
+    Northumbria University.
+  right: Built with [pkgdown](https://pkgdown.r-lib.org/).

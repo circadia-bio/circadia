@@ -1,0 +1,96 @@
+---
+title: "Getting started with circadia"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started with circadia}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 4,
+  dpi = 150
+)
+```
+
+The **circadia** package provides the shared visual identity for the Circadia
+Lab R ecosystem. It ships five colour palettes, a `ggplot2` theme, and
+discrete/continuous scale functions that can be dropped into any plot across
+`zeitR`, `slumbR`, `tallieR`, or `syncR`.
+
+```{r}
+library(circadia)
+library(ggplot2)
+```
+
+## Palettes
+
+Retrieve any palette by name with `circadia_palette()`:
+
+```{r palettes}
+circadia_palettes()   # list all available palettes
+
+circadia_palette()          # main (6 colours, default)
+circadia_palette("core")    # compact 4-colour subset
+circadia_palette("blues", n = 4)
+```
+
+All palettes support `reverse = TRUE` and sub-setting via `n`:
+
+```{r palette-reverse}
+circadia_palette("diverging", reverse = TRUE)
+```
+
+## Domain colours
+
+`domain_colour_for()` maps data domains to their brand colour — useful when
+annotating panels by data type:
+
+```{r domain}
+domain_colour_for("actigraphy")
+domain_colour_for("sleep")
+domain_colour_for("questionnaire")
+```
+
+## The `theme_circadia()` theme
+
+Apply `theme_circadia()` to any `ggplot2` plot:
+
+```{r theme, fig.alt = "Scatter plot styled with theme_circadia."}
+ggplot(mtcars, aes(wt, mpg, colour = factor(cyl))) +
+  geom_point(size = 3) +
+  labs(
+    title    = "Motor Trend Car Road Tests",
+    subtitle = "Weight vs fuel efficiency by cylinder count",
+    colour   = "Cylinders",
+    x = "Weight (1000 lbs)", y = "Miles per gallon"
+  ) +
+  scale_colour_circadia() +
+  theme_circadia()
+```
+
+The `grid` argument controls which gridlines are shown:
+
+```{r theme-grid, fig.alt = "Bar chart with horizontal gridlines only."}
+ggplot(mpg, aes(class, fill = drv)) +
+  geom_bar() +
+  scale_fill_circadia() +
+  theme_circadia(grid = "y", legend_position = "top")
+```
+
+## Continuous scales
+
+For continuous data use `scale_fill_circadia_c()` or
+`scale_colour_circadia_c()`. The `"diverging"` palette suits centred data;
+`"blues"` or `"warm"` suit unipolar data.
+
+```{r continuous, fig.alt = "Heatmap using the warm continuous palette."}
+ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_tile() +
+  scale_fill_circadia_c("warm") +
+  theme_circadia(grid = "none")
+```
