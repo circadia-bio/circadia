@@ -1,6 +1,11 @@
 # Circadia Lab colour palettes
 #
 # Palette definitions and helper functions for retrieving colours.
+#
+# Gradient palette families:
+#   Complex  — multi-hue gradations: `diverging`, `blues`, `warm`
+#   Simple   — single-axis interpolations: `diverging_simple`,
+#              `seq_blue`, `seq_coral`, `seq_amber`, `seq_ochre`
 
 #' Circadia Lab colour palettes
 #'
@@ -13,42 +18,68 @@
   # ---- Qualitative -------------------------------------------------------
   # Eight brand colours in order of visual weight; suitable for categorical data.
   main = c(
-    deep_blue    = "#014370",
-    coral_red    = "#FC544A",
-    amber        = "#FFA75D",
-    ochre        = "#C8860A",
+    deep_blue     = "#014370",
+    coral_red     = "#FC544A",
+    amber         = "#FFA75D",
+    ochre         = "#C8860A",
     antique_white = "#FFECD4",
-    mid_blue     = "#1B6799",
-    steel_blue   = "#4A9BBF",
-    pale_teal    = "#9BDFE2"
+    mid_blue      = "#1B6799",
+    steel_blue    = "#4A9BBF",
+    pale_teal     = "#9BDFE2"
   ),
 
   # Compact 5-colour subset (most frequently used in figures)
   core = c(
-    deep_blue    = "#014370",
-    coral_red    = "#FC544A",
-    amber        = "#FFA75D",
-    ochre        = "#C8860A",
+    deep_blue     = "#014370",
+    coral_red     = "#FC544A",
+    amber         = "#FFA75D",
+    ochre         = "#C8860A",
     antique_white = "#FFECD4"
   ),
 
-  # ---- Diverging ---------------------------------------------------------
-  # Blue -> antique white -> coral; centred at zero / mid-range.
+  # ---- Diverging (complex) -----------------------------------------------
+  # Multi-hue: deep blue -> teal -> antique white -> amber -> coral.
+  # Maximises perceptual distance across the full range.
   diverging = c(
     "#014370", "#1B6799", "#4A9BBF", "#9BDFE2",
     "#FFECD4",
     "#FFC99A", "#FFA75D", "#FC7060", "#FC544A"
   ),
 
-  # ---- Sequential --------------------------------------------------------
-  # Deep blue -> pale teal; suited to continuous density / intensity maps.
+  # ---- Diverging (simple) ------------------------------------------------
+  # Single-axis: deep blue -> antique white -> coral.
+  # Direct interpolation; lower chromatic contrast, cleaner at small sizes.
+  diverging_simple = c(
+    "#014370", "#567B91", "#AAB4B3", "#FFECD4", "#FEB9A6", "#FD8778", "#FC544A"
+  ),
+
+  # ---- Sequential (complex) ----------------------------------------------
+  # Multi-hue blue family: deep blue -> pale teal.
   blues = c(
     "#014370", "#1B6799", "#4A9BBF", "#7FB5C8", "#9BDFE2", "#D4F3F5"
   ),
 
-  # Coral red -> antique white; suited to warm heatmaps.
+  # Multi-hue warm family: coral -> antique white.
   warm = c(
     "#FC544A", "#FC7060", "#FFA75D", "#FFC99A", "#FFECD4"
+  ),
+
+  # ---- Sequential (simple) -----------------------------------------------
+  # Monochromatic shades of each core brand colour, light -> saturated.
+  seq_blue = c(
+    "#D4E5EF", "#8FBDD5", "#4A95BB", "#1B6799", "#014370"
+  ),
+
+  seq_coral = c(
+    "#FDECE8", "#F9B5AD", "#F57E73", "#F54840", "#C22420"
+  ),
+
+  seq_amber = c(
+    "#FFF0E2", "#FFC87A", "#FFA016", "#D97A00", "#A85E00"
+  ),
+
+  seq_ochre = c(
+    "#F5E8C0", "#E0BB6A", "#C8860A", "#9A6508", "#6C4606"
   )
 )
 
@@ -66,7 +97,9 @@
   circadian     = list(colour = "#9BDFE2", label = "Circadian rhythm"),
   questionnaire = list(colour = "#FFA75D", label = "Questionnaire"),
   demographics  = list(colour = "#FFECD4", label = "Demographics"),
-  clinical      = list(colour = "#FC544A", label = "Clinical")
+  clinical      = list(colour = "#FC544A", label = "Clinical"),
+  light         = list(colour = "#C8860A", label = "Light exposure"),
+  activity      = list(colour = "#4A9BBF", label = "Activity")
 )
 
 # ---- Public functions ----------------------------------------------------
@@ -77,20 +110,28 @@
 #' palette. Suitable for direct use in [ggplot2::scale_fill_manual()] or
 #' [ggplot2::scale_colour_manual()].
 #'
+#' Gradient palettes come in two families:
+#' * **Complex** (multi-hue): `"diverging"`, `"blues"`, `"warm"`
+#' * **Simple** (monochromatic / direct interpolation): `"diverging_simple"`,
+#'   `"seq_blue"`, `"seq_coral"`, `"seq_amber"`, `"seq_ochre"`
+#'
 #' @param palette Name of the palette. One of `"main"`, `"core"`,
-#'   `"diverging"`, `"blues"`, `"warm"`. Defaults to `"main"`.
+#'   `"diverging"`, `"diverging_simple"`, `"blues"`, `"warm"`,
+#'   `"seq_blue"`, `"seq_coral"`, `"seq_amber"`, `"seq_ochre"`.
+#'   Defaults to `"main"`.
 #' @param n Number of colours to return. If `NULL` (default) all colours in
 #'   the palette are returned. If `n` is smaller than the palette length the
 #'   first `n` colours are returned; if larger an error is thrown.
 #' @param reverse Logical. Reverse the order of the palette? Default `FALSE`.
 #'
-#' @return A named (or unnamed for diverging/sequential) character vector of
+#' @return A named (or unnamed for gradient palettes) character vector of
 #'   hex colour codes.
 #'
 #' @examples
 #' circadia_palette()
 #' circadia_palette("core")
-#' circadia_palette("blues", n = 3)
+#' circadia_palette("diverging_simple")
+#' circadia_palette("seq_blue", n = 3)
 #' circadia_palette("diverging", reverse = TRUE)
 #'
 #' @export
@@ -131,14 +172,16 @@ circadia_palette <- function(palette = "main", n = NULL, reverse = FALSE) {
 #' group membership.
 #'
 #' @param domain Character scalar. One of `"actigraphy"`, `"sleep"`,
-#'   `"circadian"`, `"questionnaire"`, `"demographics"`, `"clinical"`.
+#'   `"circadian"`, `"questionnaire"`, `"demographics"`, `"clinical"`,
+#'   `"light"`, `"activity"`.
 #'
 #' @return A length-1 named character vector with the domain hex colour, e.g.
 #'   `c(actigraphy = "#014370")`.
 #'
 #' @examples
 #' domain_colour_for("sleep")
-#' domain_colour_for("circadian")
+#' domain_colour_for("light")
+#' domain_colour_for("activity")
 #'
 #' @export
 domain_colour_for <- function(domain) {
@@ -171,8 +214,21 @@ domain_colour_for <- function(domain) {
 circadia_palettes <- function() {
   sizes <- lengths(.circadia_palettes)
   cat("Available circadia palettes:\n")
-  for (nm in names(sizes)) {
-    cat(sprintf("  %-14s  %d colours\n", nm, sizes[[nm]]))
+  cat("  Qualitative:\n")
+  for (nm in c("main", "core")) {
+    cat(sprintf("    %-20s  %d colours\n", nm, sizes[[nm]]))
+  }
+  cat("  Diverging:\n")
+  for (nm in c("diverging", "diverging_simple")) {
+    cat(sprintf("    %-20s  %d colours\n", nm, sizes[[nm]]))
+  }
+  cat("  Sequential (complex):\n")
+  for (nm in c("blues", "warm")) {
+    cat(sprintf("    %-20s  %d colours\n", nm, sizes[[nm]]))
+  }
+  cat("  Sequential (simple):\n")
+  for (nm in c("seq_blue", "seq_coral", "seq_amber", "seq_ochre")) {
+    cat(sprintf("    %-20s  %d colours\n", nm, sizes[[nm]]))
   }
   invisible(sizes)
 }
