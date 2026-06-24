@@ -2,13 +2,14 @@
 
 #' Circadia Lab ggplot2 theme
 #'
-#' A clean, minimal ggplot2 theme built on [ggplot2::theme_minimal()] with
-#' typography and spacing consistent with Circadia Lab figures.
+#' A clean ggplot2 theme built on [ggplot2::theme_minimal()] with typography
+#' and spacing consistent with Circadia Lab figures. Defaults to horizontal
+#' gridlines only, with solid axis lines on the left and bottom.
 #'
-#' @param base_size Base font size in points. Default `12`.
+#' @param base_size Base font size in points. Default `14`.
 #' @param base_family Base font family. Default `""` (ggplot2 default).
-#' @param grid Which grid lines to show. One of `"xy"` (both, default),
-#'   `"x"` (vertical only), `"y"` (horizontal only), `"none"`.
+#' @param grid Which grid lines to show. One of `"y"` (horizontal only,
+#'   default), `"xy"` (both), `"x"` (vertical only), `"none"`.
 #' @param legend_position Position of the legend passed to
 #'   [ggplot2::theme()]. Default `"right"`.
 #'
@@ -25,46 +26,53 @@
 #'   element_blank element_rect margin rel unit
 #' @export
 theme_circadia <- function(
-    base_size       = 12,
+    base_size       = 14,
     base_family     = "",
-    grid            = "xy",
+    grid            = "y",
     legend_position = "right"
 ) {
-  grid <- match.arg(grid, c("xy", "x", "y", "none"))
+  grid <- match.arg(grid, c("y", "xy", "x", "none"))
 
   show_x <- grid %in% c("xy", "x")
   show_y <- grid %in% c("xy", "y")
 
-  grid_line <- element_line(colour = "#E8E8E8", linewidth = 0.4)
+  grid_line <- element_line(colour = "#E0E0E0", linewidth = 0.4)
   no_line   <- element_blank()
+  axis_line <- element_line(colour = "#333333", linewidth = 0.5)
 
   theme_minimal(base_size = base_size, base_family = base_family) +
     theme(
       # --- Text ---
       plot.title    = element_text(
         colour = "#014370", face = "bold",
-        size   = rel(1.15), margin = margin(b = 6)
+        size   = rel(1.2), margin = margin(b = 8)
       ),
       plot.subtitle = element_text(
         colour = "#555555",
-        size   = rel(0.95), margin = margin(b = 10)
+        size   = rel(1.0), margin = margin(b = 10)
       ),
       plot.caption  = element_text(
-        colour = "#888888", size = rel(0.75),
+        colour = "#888888", size = rel(0.8),
         margin = margin(t = 8), hjust = 1
       ),
-      axis.title    = element_text(colour = "#333333", size = rel(0.9)),
-      axis.text     = element_text(colour = "#555555", size = rel(0.85)),
+      axis.title    = element_text(colour = "#333333", size = rel(1.0)),
+      axis.text     = element_text(colour = "#444444", size = rel(0.95)),
       strip.text    = element_text(
-        colour = "#014370", face = "bold", size = rel(0.9)
+        colour = "#014370", face = "bold", size = rel(1.0)
       ),
-      legend.title  = element_text(colour = "#333333", size = rel(0.9)),
-      legend.text   = element_text(colour = "#555555", size = rel(0.85)),
+      legend.title  = element_text(colour = "#333333", size = rel(0.95)),
+      legend.text   = element_text(colour = "#555555", size = rel(0.9)),
 
       # --- Panel ---
       panel.background = element_rect(fill = "white", colour = NA),
       plot.background  = element_rect(fill = "white", colour = NA),
       panel.border     = element_blank(),
+
+      # --- Axis lines (left and bottom only) ---
+      axis.line.x.bottom = axis_line,
+      axis.line.y.left   = axis_line,
+      axis.line.x.top    = no_line,
+      axis.line.y.right  = no_line,
 
       # --- Grid ---
       panel.grid.major.x = if (show_x) grid_line else no_line,
@@ -72,18 +80,18 @@ theme_circadia <- function(
       panel.grid.minor   = no_line,
 
       # --- Axes ---
-      axis.ticks       = element_line(colour = "#CCCCCC", linewidth = 0.3),
-      axis.ticks.length = unit(3, "pt"),
+      axis.ticks        = element_line(colour = "#AAAAAA", linewidth = 0.4),
+      axis.ticks.length = unit(4, "pt"),
 
       # --- Legend ---
-      legend.position  = legend_position,
-      legend.key       = element_rect(fill = NA, colour = NA),
+      legend.position   = legend_position,
+      legend.key        = element_rect(fill = NA, colour = NA),
       legend.background = element_rect(fill = NA, colour = NA),
 
       # --- Facets ---
       strip.background = element_rect(fill = "#F0F4F7", colour = NA),
 
       # --- Spacing ---
-      plot.margin = margin(12, 12, 8, 12)
+      plot.margin = margin(12, 16, 10, 12)
     )
 }
