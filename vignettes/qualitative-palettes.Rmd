@@ -1,0 +1,145 @@
+---
+title: "Qualitative palettes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Qualitative palettes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  comment   = "#>",
+  fig.width = 7, fig.height = 4, dpi = 150,
+  out.width = "100%"
+)
+
+# Helper: generate click-to-copy swatch HTML from a named colour vector
+palette_viewer <- function(pal_name) {
+  pal  <- circadia::circadia_palette(pal_name)
+  nms  <- if (is.null(names(pal))) paste0("stop ", seq_along(pal)) else names(pal)
+  cols <- unname(pal)
+
+  swatches <- mapply(function(col, nm) {
+    r   <- strtoi(substr(col, 2, 3), 16L)
+    g   <- strtoi(substr(col, 4, 5), 16L)
+    b   <- strtoi(substr(col, 6, 7), 16L)
+    lum <- (0.299 * r + 0.587 * g + 0.114 * b) / 255
+    tc  <- if (lum > 0.55) "#333333" else "#ffffff"
+    sprintf(
+      '<div class="circ-swatch" data-hex="%s"
+             style="background:%s;color:%s"
+             onclick="circCopyHex(this)" title="Click to copy %s">
+         <span class="circ-swatch-name">%s</span>
+         <span class="circ-swatch-hex">%s</span>
+       </div>',
+      col, col, tc, col, gsub("_", "\u00a0", nm), col
+    )
+  }, cols, nms, SIMPLIFY = TRUE)
+
+  htmltools::HTML(sprintf(
+    '<div class="circ-palette-viewer">%s</div>',
+    paste(swatches, collapse = "\n")
+  ))
+}
+```
+
+```{r, message = FALSE}
+library(circadia)
+library(ggplot2)
+```
+
+The qualitative palettes are designed for **categorical data** where each
+colour encodes a distinct group. circadia provides two: `main` (8 colours)
+for complex figures, and `core` (5 colours) as a compact everyday subset.
+
+## The `main` palette
+
+Eight brand colours spanning the full chromatic range — use when you have
+up to 8 categorical groups.
+
+```{r main-viewer, echo = FALSE, results = "asis"}
+palette_viewer("main")
+```
+
+*Click any swatch to copy the hex code.*
+
+```{r main-scatter, fig.alt = "Scatter plot of car weight vs mpg coloured by cylinder count using the main palette"}
+ggplot(mtcars, aes(wt, mpg, colour = factor(cyl))) +
+  geom_point(size = 3, alpha = 0.85) +
+  labs(
+    title   = "Fuel efficiency by engine size",
+    colour  = "Cylinders",
+    x       = "Weight (1000 lbs)",
+    y       = "Miles per gallon"
+  ) +
+  scale_colour_circadia() +
+  theme_circadia()
+```
+
+```{r main-bar, fig.alt = "Grouped bar chart of vehicle classes by drive type using the main palette"}
+ggplot(mpg, aes(class, fill = drv)) +
+  geom_bar(position = "dodge") +
+  labs(
+    title = "Vehicle classes by drive type",
+    fill  = "Drive",
+    x     = NULL, y = "Count"
+  ) +
+  scale_fill_circadia() +
+  theme_circadia(grid = "y")
+```
+
+## The `core` palette
+
+A compact 5-colour subset — the four anchors plus ochre. Use this for
+figures with five or fewer groups where you want the cleanest possible
+colour separation.
+
+```{r core-viewer, echo = FALSE, results = "asis"}
+palette_viewer("core")
+```
+
+```{r core-scatter, fig.alt = "Scatter plot coloured by drive type using the core palette"}
+ggplot(mpg, aes(displ, hwy, colour = drv)) +
+  geom_point(size = 2.5, alpha = 0.8) +
+  labs(
+    title  = "Engine displacement vs highway mpg",
+    colour = "Drive type",
+    x      = "Displacement (L)", y = "Highway mpg"
+  ) +
+  scale_colour_circadia(palette = "core") +
+  theme_circadia()
+```
+
+## Reversing the palette
+
+Pass `reverse = TRUE` to flip the colour order — useful when you want the
+lightest colour to map to the first factor level.
+
+```{r reverse, fig.alt = "Box plots of mpg by cylinder count with reversed palette"}
+ggplot(mtcars, aes(factor(cyl), mpg, fill = factor(cyl))) +
+  geom_boxplot(alpha = 0.85, show.legend = FALSE) +
+  labs(
+    title = "MPG distribution by cylinders — reversed palette",
+    x     = "Cylinders", y = "Miles per gallon"
+  ) +
+  scale_fill_circadia(palette = "core", reverse = TRUE) +
+  theme_circadia(grid = "y")
+```
+
+## Retrieving colours directly
+
+Use `circadia_palette()` when you need the raw hex values — for example, to
+pass to `ggplot2::scale_colour_manual()` or base R graphics.
+
+```{r raw}
+# Full main palette
+circadia_palette("main")
+
+# First three colours from core
+circadia_palette("core", n = 3)
+
+# Reversed blues
+circadia_palette("core", reverse = TRUE)
+```

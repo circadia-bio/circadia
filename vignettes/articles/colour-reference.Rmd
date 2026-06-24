@@ -1,0 +1,182 @@
+---
+title: "Colour reference"
+output:
+  html_document:
+    toc: false
+    self_contained: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(circadia)
+library(htmltools)
+
+# ── Helpers ────────────────────────────────────────────────────────────────
+
+text_col <- function(hex) {
+  r   <- strtoi(substr(hex, 2, 3), 16L)
+  g   <- strtoi(substr(hex, 4, 5), 16L)
+  b   <- strtoi(substr(hex, 6, 7), 16L)
+  lum <- (0.299 * r + 0.587 * g + 0.114 * b) / 255
+  if (lum > 0.55) "#333333" else "#ffffff"
+}
+
+swatch <- function(col, nm) {
+  tc <- text_col(col)
+  div(
+    class       = "circ-swatch",
+    `data-hex`  = col,
+    style       = sprintf("background:%s;color:%s", col, tc),
+    onclick     = "circCopyHex(this)",
+    title       = paste0("Click to copy ", col),
+    span(class = "circ-swatch-name", gsub("_", "\u00a0", nm)),
+    span(class = "circ-swatch-hex",  col)
+  )
+}
+
+palette_row <- function(pal_name) {
+  pal  <- circadia_palette(pal_name)
+  nms  <- if (is.null(names(pal))) rep("", length(pal)) else names(pal)
+  div(class = "circ-palette-viewer",
+      tagList(mapply(swatch, unname(pal), nms, SIMPLIFY = FALSE)))
+}
+
+gradient_row <- function(pal_name, label, desc) {
+  pal  <- unname(circadia_palette(pal_name))
+  grad <- paste0("linear-gradient(to right,", paste(pal, collapse = ","), ")")
+  div(class = "circ-grad-block",
+    div(style = "width:160px;flex-shrink:0",
+      tags$strong(label),
+      tags$br(),
+      tags$small(style = "color:#6b7280", desc)
+    ),
+    div(
+      class       = "circ-gradient-strip",
+      `data-hex`  = paste(pal, collapse = " "),
+      style       = sprintf("flex:1;background:%s", grad),
+      onclick      = "circCopyHex(this)",
+      title       = paste0(pal_name, " — click to copy stops")
+    )
+  )
+}
+
+domain_chip <- function(key, label) {
+  col <- domain_colour_for(key)[[1]]
+  tc  <- text_col(col)
+  div(class = "circ-domain-chip",
+    div(class  = "circ-domain-col",
+        style  = sprintf("background:%s;color:%s", col, tc),
+        `data-hex` = col,
+        onclick    = "circCopyHex(this)",
+        title      = paste0("Click to copy ", col),
+        span(style = "font-weight:600;font-size:12px", label),
+        tags$br(),
+        span(style = "font-size:10px;opacity:0.8;font-family:monospace", col)
+    ),
+    div(class = "circ-domain-info",
+      tags$small(key),
+      tags$br(),
+      tags$small(style = "font-family:monospace;color:#6b7280",
+                 paste0('domain_colour_for("', key, '")'))
+    )
+  )
+}
+```
+
+```{=html}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Playfair+Display:wght@700&display=swap');
+
+body       { font-family: 'Alice', Georgia, serif; }
+h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; color: #014370; }
+
+.circ-section { margin-bottom: 36px; }
+.circ-sub {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #9BA8B4; margin: 18px 0 10px;
+}
+
+.circ-grad-block {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
+}
+
+.circ-domain-chip {
+  display: inline-flex; flex-direction: column;
+  border-radius: 8px; overflow: hidden;
+  width: 130px; margin: 0 6px 10px 0;
+  box-shadow: 0 1px 3px rgba(1,67,112,.08);
+}
+.circ-domain-col {
+  padding: 10px; cursor: pointer; min-height: 52px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.circ-domain-info {
+  padding: 6px 8px; background: #fff;
+  border: 0.5px solid #dde3e9; border-top: none;
+}
+.circ-domain-row { display: flex; flex-wrap: wrap; }
+</style>
+```
+
+```{r ref-header, results = "asis"}
+div(
+  style = "background:#014370;padding:28px 32px;border-radius:8px;margin-bottom:32px",
+  h1(style = "color:#fff;margin:0;font-size:26px", "Circadia Colour Reference"),
+  p(style  = "color:#9BDFE2;margin:6px 0 0;font-size:14px",
+    "Complete palette reference for the Circadia Lab R ecosystem")
+)
+```
+
+## Qualitative palettes
+
+```{r qual, results = "asis"}
+div(class = "circ-section",
+  div(class = "circ-sub", "main — 8 colours"),
+  palette_row("main"),
+  div(class = "circ-sub", "core — 5 colours"),
+  palette_row("core")
+)
+```
+
+## Diverging palettes
+
+```{r div, results = "asis"}
+div(class = "circ-section",
+  gradient_row("diverging",        "diverging",        "complex · 9 stops · multi-hue"),
+  gradient_row("diverging_simple", "diverging_simple", "simple · 7 stops · direct interpolation")
+)
+```
+
+## Sequential palettes
+
+```{r seq, results = "asis"}
+div(class = "circ-section",
+  div(class = "circ-sub", "complex — multi-hue"),
+  gradient_row("blues", "blues", "deep blue → pale teal"),
+  gradient_row("warm",  "warm",  "coral → antique white"),
+  div(class = "circ-sub", "simple — monochromatic shades"),
+  gradient_row("seq_blue",  "seq_blue",  "monochromatic blue"),
+  gradient_row("seq_coral", "seq_coral", "monochromatic coral"),
+  gradient_row("seq_amber", "seq_amber", "monochromatic amber"),
+  gradient_row("seq_ochre", "seq_ochre", "monochromatic ochre")
+)
+```
+
+## Domain colours
+
+```{r domain, results = "asis"}
+div(class = "circ-domain-row",
+  domain_chip("actigraphy",    "Actigraphy"),
+  domain_chip("sleep",         "Sleep"),
+  domain_chip("circadian",     "Circadian"),
+  domain_chip("questionnaire", "Questionnaire"),
+  domain_chip("demographics",  "Demographics"),
+  domain_chip("clinical",      "Clinical"),
+  domain_chip("light",         "Light"),
+  domain_chip("activity",      "Activity")
+)
+```
+
+---
+
+*Click any swatch or gradient strip to copy the hex code to your clipboard.*

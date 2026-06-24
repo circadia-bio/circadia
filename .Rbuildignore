@@ -4,3 +4,5 @@
 ^\.github$
 ^_pkgdown\.yml$
 ^LICENSE\.md$
+^pkgdown$
+^vignettes/articles$

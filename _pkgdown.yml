@@ -7,60 +7,85 @@ template:
     primary:        "#014370"
     link-color:     "#1B6799"
     headings-color: "#014370"
-    base_font: {google: "Inter"}
-    heading_font: {google: "Inter"}
+    base_font:    {google: "Alice"}
+    heading_font: {google: "Playfair Display"}
+  includes:
+    in_header: |
+      <link rel="preconnect" href="https://fonts.googleapis.com"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 
 home:
-  title: "circadia — Circadia Lab visual identity for R"
+  title: "circadia — Circadia Lab colour system for R"
   description: >
     Colour palettes, ggplot2 theme, and scales for the Circadia Lab R ecosystem.
 
 navbar:
   structure:
-    left:  [intro, reference, articles]
+    left:  [intro, articles, reference]
     right: [github]
   components:
+    intro:
+      text: Get started
+      href: articles/getting-started.html
+    articles:
+      text: Palettes
+      menu:
+        - text: "Qualitative palettes"
+          href: articles/qualitative-palettes.html
+        - text: "Diverging palettes"
+          href: articles/diverging-palettes.html
+        - text: "Sequential palettes"
+          href: articles/sequential-palettes.html
+        - text: "---"
+        - text: "Colour reference"
+          href: articles/colour-reference.html
     github:
       icon: fab fa-github
       href: https://github.com/circadia-bio/circadia
 
 reference:
   - title: Palettes
-    desc: >
-      Retrieve and explore colour palettes.
+    desc: Retrieve and explore colour palettes.
     contents:
       - circadia_palette
       - circadia_palettes
       - domain_colour_for
   - title: Theme
-    desc: >
-      ggplot2 theme consistent with Circadia Lab figures.
+    desc: ggplot2 theme consistent with Circadia Lab figures.
     contents:
       - theme_circadia
   - title: Scales — discrete
-    desc: >
-      Apply Circadia Lab palettes to discrete colour/fill aesthetics.
+    desc: Apply Circadia Lab palettes to discrete colour/fill aesthetics.
     contents:
       - scale_colour_circadia
       - scale_color_circadia
       - scale_fill_circadia
   - title: Scales — continuous
-    desc: >
-      Interpolated palettes for continuous colour/fill aesthetics.
+    desc: Interpolated palettes for continuous colour/fill aesthetics.
     contents:
       - scale_colour_circadia_c
       - scale_color_circadia_c
       - scale_fill_circadia_c
 
 articles:
-  - title: Guides
+  - title: Getting started
     navbar: ~
     contents:
       - getting-started
+  - title: Palette guides
+    navbar: Palettes
+    contents:
+      - qualitative-palettes
+      - diverging-palettes
+      - sequential-palettes
+  - title: Reference
+    navbar: Reference
+    contents:
+      - articles/colour-reference
 
 footer:
   left: >
     Developed by the
-    [Circadia Lab](https://github.com/circadia-bio),
+    [Circadia Lab](https://circadia-lab.uk),
     Northumbria University.
   right: Built with [pkgdown](https://pkgdown.r-lib.org/).

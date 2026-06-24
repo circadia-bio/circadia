@@ -1,0 +1,163 @@
+---
+title: "Sequential palettes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Sequential palettes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse  = TRUE,
+  comment   = "#>",
+  fig.width = 7, fig.height = 4, dpi = 150,
+  out.width = "100%"
+)
+
+palette_viewer <- function(pal_name) {
+  pal  <- circadia::circadia_palette(pal_name)
+  nms  <- if (is.null(names(pal))) paste0("stop ", seq_along(pal)) else names(pal)
+  cols <- unname(pal)
+  swatches <- mapply(function(col, nm) {
+    r   <- strtoi(substr(col, 2, 3), 16L)
+    g   <- strtoi(substr(col, 4, 5), 16L)
+    b   <- strtoi(substr(col, 6, 7), 16L)
+    lum <- (0.299 * r + 0.587 * g + 0.114 * b) / 255
+    tc  <- if (lum > 0.55) "#333333" else "#ffffff"
+    sprintf(
+      '<div class="circ-swatch" data-hex="%s"
+             style="background:%s;color:%s;min-width:48px"
+             onclick="circCopyHex(this)" title="Click to copy %s">
+         <span class="circ-swatch-hex">%s</span>
+       </div>',
+      col, col, tc, col, col
+    )
+  }, cols, nms, SIMPLIFY = TRUE)
+  htmltools::HTML(sprintf(
+    '<div class="circ-palette-viewer">%s</div>',
+    paste(swatches, collapse = "\n")
+  ))
+}
+```
+
+```{r, message = FALSE}
+library(circadia)
+library(ggplot2)
+library(patchwork)
+```
+
+Sequential palettes map a continuous range from low (light) to high
+(saturated). circadia provides two families:
+
+| Family | Palettes | Hue strategy |
+|---|---|---|
+| Complex | `blues`, `warm` | Multi-hue — higher perceptual contrast |
+| Simple | `seq_blue`, `seq_coral`, `seq_amber`, `seq_ochre` | Monochromatic shades — consistent hue identity |
+
+Use **complex** palettes when maximum contrast across the range matters.
+Use **simple** palettes when you want the colour to stay clearly associated
+with a particular brand colour throughout its range.
+
+## Complex sequential
+
+### `blues`
+
+Six stops from deep blue to pale teal — suited to density, intensity, or
+frequency data.
+
+```{r blues-viewer, echo = FALSE, results = "asis"}
+palette_viewer("blues")
+```
+
+```{r blues-density, fig.alt = "2D density heatmap using the blues palette"}
+ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_tile() +
+  scale_fill_circadia_c("blues") +
+  labs(title = "Old Faithful eruption density — blues",
+       x = "Waiting time (min)", y = "Eruption duration (min)") +
+  theme_circadia(grid = "none")
+```
+
+### `warm`
+
+Five stops from coral to antique white — suited to warm-toned data such as
+body temperature, light exposure, or alertness ratings.
+
+```{r warm-viewer, echo = FALSE, results = "asis"}
+palette_viewer("warm")
+```
+
+```{r warm-density, fig.alt = "2D density heatmap using the warm palette"}
+ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_tile() +
+  scale_fill_circadia_c("warm") +
+  labs(title = "Old Faithful eruption density — warm",
+       x = "Waiting time (min)", y = "Eruption duration (min)") +
+  theme_circadia(grid = "none")
+```
+
+## Simple sequential
+
+Each simple palette is a monochromatic ramp of one brand colour, running
+from a pale tint to the full saturated value. Use these when the hue itself
+carries meaning — e.g. `seq_blue` for sleep depth, `seq_ochre` for light
+exposure intensity.
+
+```{r simple-viewers, echo = FALSE, results = "asis"}
+htmltools::tagList(
+  htmltools::tags$p(htmltools::tags$strong("seq_blue")),  palette_viewer("seq_blue"),
+  htmltools::tags$p(htmltools::tags$strong("seq_coral")), palette_viewer("seq_coral"),
+  htmltools::tags$p(htmltools::tags$strong("seq_amber")), palette_viewer("seq_amber"),
+  htmltools::tags$p(htmltools::tags$strong("seq_ochre")), palette_viewer("seq_ochre")
+)
+```
+
+```{r simple-grid, fig.width = 8, fig.height = 6, fig.alt = "Four density heatmaps each using a different simple sequential palette"}
+make_tile <- function(pal) {
+  ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+    geom_tile() +
+    scale_fill_circadia_c(pal) +
+    labs(title = pal, x = NULL, y = NULL) +
+    theme_circadia(grid = "none") +
+    theme(
+      plot.title = element_text(size = 11),
+      axis.text  = element_blank(),
+      axis.ticks = element_blank(),
+      legend.position = "none"
+    )
+}
+
+(make_tile("seq_blue") + make_tile("seq_coral")) /
+(make_tile("seq_amber") + make_tile("seq_ochre"))
+```
+
+## Combining with `theme_circadia()`
+
+All continuous scales compose naturally with `theme_circadia()`:
+
+```{r combined, fig.alt = "Scatter plot with continuous colour scale and theme_circadia"}
+ggplot(mtcars, aes(wt, mpg, colour = hp)) +
+  geom_point(size = 3) +
+  scale_colour_circadia_c("blues") +
+  labs(
+    title  = "Weight, efficiency and horsepower",
+    colour = "HP",
+    x      = "Weight (1000 lbs)", y = "Miles per gallon"
+  ) +
+  theme_circadia()
+```
+
+## Reversing
+
+Pass `reverse = TRUE` to any continuous scale to flip the direction —
+useful when lower values should map to the saturated end:
+
+```{r reverse, fig.alt = "Density heatmap with reversed blues palette"}
+ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
+  geom_tile() +
+  scale_fill_circadia_c("blues", reverse = TRUE) +
+  labs(title = "Reversed blues — high density = light",
+       x = "Waiting time (min)", y = "Eruption duration (min)") +
+  theme_circadia(grid = "none")
+```

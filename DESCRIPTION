@@ -26,10 +26,12 @@ Depends:
 Imports:
     ggplot2 (>= 3.4.0)
 Suggests:
+    htmltools,
     knitr,
     pkgdown,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    patchwork
 Config/testthat/edition: 3
 URL: https://github.com/circadia-bio/circadia
 BugReports: https://github.com/circadia-bio/circadia/issues
