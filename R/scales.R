@@ -44,7 +44,6 @@
 scale_colour_circadia <- function(palette = "main", reverse = FALSE, ...) {
   discrete_scale(
     aesthetics = "colour",
-    scale_name = "circadia",
     palette    = .circadia_pal(palette, reverse),
     ...
   )
@@ -72,7 +71,6 @@ scale_color_circadia <- scale_colour_circadia
 scale_fill_circadia <- function(palette = "main", reverse = FALSE, ...) {
   discrete_scale(
     aesthetics = "fill",
-    scale_name = "circadia",
     palette    = .circadia_pal(palette, reverse),
     ...
   )

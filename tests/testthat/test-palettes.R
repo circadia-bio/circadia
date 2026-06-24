@@ -37,8 +37,8 @@ test_that("diverging_simple is present and has 7 stops", {
 test_that("simple sequential palettes exist and have 5 stops each", {
   for (nm in c("seq_blue", "seq_coral", "seq_amber", "seq_ochre")) {
     pal <- circadia_palette(nm)
-    expect_length(pal, 5L, label = nm)
-    expect_true(all(grepl("^#[0-9A-Fa-f]{6}$", pal)), label = nm)
+    expect_length(pal, 5L)
+    expect_true(all(grepl("^#[0-9A-Fa-f]{6}$", pal)))
   }
 })
 
