@@ -8,7 +8,8 @@ domain_colour_for(domain)
 }
 \arguments{
 \item{domain}{Character scalar. One of \code{"actigraphy"}, \code{"sleep"},
-\code{"circadian"}, \code{"questionnaire"}, \code{"demographics"}, \code{"clinical"}.}
+\code{"circadian"}, \code{"questionnaire"}, \code{"demographics"}, \code{"clinical"},
+\code{"light"}, \code{"activity"}.}
 }
 \value{
 A length-1 named character vector with the domain hex colour, e.g.
@@ -21,6 +22,7 @@ group membership.
 }
 \examples{
 domain_colour_for("sleep")
-domain_colour_for("circadian")
+domain_colour_for("light")
+domain_colour_for("activity")
 
 }

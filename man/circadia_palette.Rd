@@ -8,7 +8,9 @@ circadia_palette(palette = "main", n = NULL, reverse = FALSE)
 }
 \arguments{
 \item{palette}{Name of the palette. One of \code{"main"}, \code{"core"},
-\code{"diverging"}, \code{"blues"}, \code{"warm"}. Defaults to \code{"main"}.}
+\code{"diverging"}, \code{"diverging_simple"}, \code{"blues"}, \code{"warm"},
+\code{"seq_blue"}, \code{"seq_coral"}, \code{"seq_amber"}, \code{"seq_ochre"}.
+Defaults to \code{"main"}.}
 
 \item{n}{Number of colours to return. If \code{NULL} (default) all colours in
 the palette are returned. If \code{n} is smaller than the palette length the
@@ -17,7 +19,7 @@ first \code{n} colours are returned; if larger an error is thrown.}
 \item{reverse}{Logical. Reverse the order of the palette? Default \code{FALSE}.}
 }
 \value{
-A named (or unnamed for diverging/sequential) character vector of
+A named (or unnamed for gradient palettes) character vector of
 hex colour codes.
 }
 \description{
@@ -25,10 +27,19 @@ Returns a named character vector of hex colour codes for the requested
 palette. Suitable for direct use in \code{\link[ggplot2:scale_manual]{ggplot2::scale_fill_manual()}} or
 \code{\link[ggplot2:scale_manual]{ggplot2::scale_colour_manual()}}.
 }
+\details{
+Gradient palettes come in two families:
+\itemize{
+\item \strong{Complex} (multi-hue): \code{"diverging"}, \code{"blues"}, \code{"warm"}
+\item \strong{Simple} (monochromatic / direct interpolation): \code{"diverging_simple"},
+\code{"seq_blue"}, \code{"seq_coral"}, \code{"seq_amber"}, \code{"seq_ochre"}
+}
+}
 \examples{
 circadia_palette()
 circadia_palette("core")
-circadia_palette("blues", n = 3)
+circadia_palette("diverging_simple")
+circadia_palette("seq_blue", n = 3)
 circadia_palette("diverging", reverse = TRUE)
 
 }
