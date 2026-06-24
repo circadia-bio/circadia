@@ -2,8 +2,12 @@ pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
+  articles/colour-reference: colour-reference.html
+  diverging-palettes: diverging-palettes.html
   getting-started: getting-started.html
-last_built: 2026-06-24T21:48Z
+  qualitative-palettes: qualitative-palettes.html
+  sequential-palettes: sequential-palettes.html
+last_built: 2026-06-24T23:19Z
 urls:
   reference: https://github.com/circadia-bio/circadia/reference
   article: https://github.com/circadia-bio/circadia/articles
