@@ -11,7 +11,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/circadia-bio/circadia/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/circadia-bio/circadia/blob/v0.1.0/DESCRIPTION)
 
 França L, Leocadio-Miguel M (2026). *circadia: Circadia Lab Colour
 Palettes and ggplot2 Theme*. R package version 0.1.0,
