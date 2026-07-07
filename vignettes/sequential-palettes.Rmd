@@ -44,7 +44,6 @@ palette_viewer <- function(pal_name) {
 ```{r, message = FALSE}
 library(circadia)
 library(ggplot2)
-library(patchwork)
 ```
 
 Sequential palettes map a continuous range from low (light) to high
@@ -113,7 +112,8 @@ htmltools::tagList(
 )
 ```
 
-```{r simple-grid, fig.width = 8, fig.height = 6, fig.alt = "Four density heatmaps each using a different simple sequential palette"}
+```{r simple-grid, fig.width = 8, fig.height = 6, fig.alt = "Four density heatmaps each using a different simple sequential palette", eval = requireNamespace("patchwork", quietly = TRUE)}
+library(patchwork)
 make_tile <- function(pal) {
   ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
     geom_tile() +

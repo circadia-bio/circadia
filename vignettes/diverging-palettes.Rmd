@@ -108,7 +108,7 @@ ggplot(cor_df, aes(Var1, Var2, fill = value)) +
 
 ## Side-by-side comparison
 
-```{r div-compare, fig.width = 9, fig.height = 3.5, fig.alt = "Side by side comparison of diverging and diverging_simple on a z-score heatmap"}
+```{r div-compare, fig.width = 9, fig.height = 3.5, fig.alt = "Side by side comparison of diverging and diverging_simple on a z-score heatmap", eval = requireNamespace("patchwork", quietly = TRUE)}
 library(patchwork)
 
 # Standardised sleep-like data: z-scores across a small grid

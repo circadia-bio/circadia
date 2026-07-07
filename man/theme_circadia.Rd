@@ -5,19 +5,19 @@
 \title{Circadia Lab ggplot2 theme}
 \usage{
 theme_circadia(
-  base_size = 12,
+  base_size = 14,
   base_family = "",
-  grid = "xy",
+  grid = "none",
   legend_position = "right"
 )
 }
 \arguments{
-\item{base_size}{Base font size in points. Default \code{12}.}
+\item{base_size}{Base font size in points. Default \code{14}.}
 
 \item{base_family}{Base font family. Default \code{""} (ggplot2 default).}
 
-\item{grid}{Which grid lines to show. One of \code{"xy"} (both, default),
-\code{"x"} (vertical only), \code{"y"} (horizontal only), \code{"none"}.}
+\item{grid}{Which grid lines to show. One of \code{"none"} (default),
+\code{"y"} (horizontal only), \code{"xy"} (both), \code{"x"} (vertical only).}
 
 \item{legend_position}{Position of the legend passed to
 \code{\link[ggplot2:theme]{ggplot2::theme()}}. Default \code{"right"}.}
@@ -26,8 +26,9 @@ theme_circadia(
 A \code{\link[ggplot2:theme]{ggplot2::theme()}} object.
 }
 \description{
-A clean, minimal ggplot2 theme built on \code{\link[ggplot2:ggtheme]{ggplot2::theme_minimal()}} with
-typography and spacing consistent with Circadia Lab figures.
+A clean ggplot2 theme built on \code{\link[ggplot2:theme_minimal]{ggplot2::theme_minimal()}} with typography
+and spacing consistent with Circadia Lab figures. Defaults to horizontal
+gridlines only, with solid axis lines on the left and bottom.
 }
 \examples{
 library(ggplot2)

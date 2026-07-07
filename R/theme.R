@@ -22,8 +22,7 @@
 #'   scale_colour_circadia() +
 #'   theme_circadia()
 #'
-#' @importFrom ggplot2 theme_minimal theme element_text element_line
-#'   element_blank element_rect margin rel unit
+#' @importFrom ggplot2 theme_minimal theme element_text element_line element_blank element_rect margin rel unit
 #' @export
 theme_circadia <- function(
     base_size       = 14,
