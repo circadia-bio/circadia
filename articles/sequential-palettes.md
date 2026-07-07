@@ -4,7 +4,6 @@
 
 library(circadia)
 library(ggplot2)
-library(patchwork)
 ```
 
 Sequential palettes map a continuous range from low (light) to high
@@ -136,6 +135,7 @@ for light exposure intensity.
 
 ``` r
 
+library(patchwork)
 make_tile <- function(pal) {
   ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
     geom_tile() +

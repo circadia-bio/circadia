@@ -1,16 +1,18 @@
 # Circadia Lab ggplot2 theme
 
-A clean, minimal ggplot2 theme built on
+A clean ggplot2 theme built on
 [`ggplot2::theme_minimal()`](https://ggplot2.tidyverse.org/reference/ggtheme.html)
 with typography and spacing consistent with Circadia Lab figures.
+Defaults to horizontal gridlines only, with solid axis lines on the left
+and bottom.
 
 ## Usage
 
 ``` r
 theme_circadia(
-  base_size = 12,
+  base_size = 14,
   base_family = "",
-  grid = "xy",
+  grid = "none",
   legend_position = "right"
 )
 ```
@@ -19,7 +21,7 @@ theme_circadia(
 
 - base_size:
 
-  Base font size in points. Default `12`.
+  Base font size in points. Default `14`.
 
 - base_family:
 
@@ -27,8 +29,8 @@ theme_circadia(
 
 - grid:
 
-  Which grid lines to show. One of `"xy"` (both, default), `"x"`
-  (vertical only), `"y"` (horizontal only), `"none"`.
+  Which grid lines to show. One of `"none"` (default), `"y"` (horizontal
+  only), `"xy"` (both), `"x"` (vertical only).
 
 - legend_position:
 
