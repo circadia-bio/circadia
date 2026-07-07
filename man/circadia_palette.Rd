@@ -24,8 +24,8 @@ hex colour codes.
 }
 \description{
 Returns a named character vector of hex colour codes for the requested
-palette. Suitable for direct use in \code{\link[ggplot2:scale_manual]{ggplot2::scale_fill_manual()}} or
-\code{\link[ggplot2:scale_manual]{ggplot2::scale_colour_manual()}}.
+palette. Suitable for direct use in \code{\link[ggplot2:scale_fill_manual]{ggplot2::scale_fill_manual()}} or
+\code{\link[ggplot2:scale_colour_manual]{ggplot2::scale_colour_manual()}}.
 }
 \details{
 Gradient palettes come in two families:

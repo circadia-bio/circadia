@@ -14,7 +14,7 @@ scale_color_circadia_c(palette = "blues", reverse = FALSE, ...)
 
 \item{reverse}{Logical. Reverse the palette? Default \code{FALSE}.}
 
-\item{...}{Additional arguments passed to \code{\link[ggplot2:scale_gradient]{ggplot2::scale_colour_gradientn()}}.}
+\item{...}{Additional arguments passed to \code{\link[ggplot2:scale_colour_gradientn]{ggplot2::scale_colour_gradientn()}}.}
 }
 \description{
 Interpolates across a Circadia Lab palette for continuous \code{colour} data.
