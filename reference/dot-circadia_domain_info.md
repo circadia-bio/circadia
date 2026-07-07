@@ -9,7 +9,3 @@ colour. Consumed internally by
 ``` r
 .circadia_domain_info
 ```
-
-## Format
-
-An object of class `list` of length 8.
