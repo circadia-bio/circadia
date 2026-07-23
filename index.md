@@ -128,11 +128,11 @@ ggplot(faithfuld, aes(waiting, eruptions, fill = density)) +
 
 ## 🤝 Related Tools
 
-- ⏱ [**zeitR**](https://github.com/circadia-bio/zeitR) — wrist
+- ⌚️ [**zeitR**](https://github.com/circadia-bio/zeitR) — wrist
   actigraphy analysis and circadian metrics
-- 😴 [**slumbR**](https://github.com/circadia-bio/slumbR) — sleep diary
+- 🛌 [**slumbR**](https://github.com/circadia-bio/slumbR) — sleep diary
   processing
-- 📋 [**tallieR**](https://github.com/circadia-bio/tallieR) —
+- 🧮 [**tallieR**](https://github.com/circadia-bio/tallieR) —
   sociodemographic and questionnaire data
 - 🔄 [**syncR**](https://github.com/circadia-bio/syncR) — unified
   participant-indexed database
